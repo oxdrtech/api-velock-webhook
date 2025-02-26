@@ -24,9 +24,7 @@ export class CreateLoginService {
 
     if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
 
-    //TODO - verificar a logica desses campos
     const updatePlayerData: UpdatePlayerDto = {
-      lastAccessDate: new Date,
       lastLoginDate: new Date,
     };
 
