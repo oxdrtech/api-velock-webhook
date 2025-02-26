@@ -29,12 +29,12 @@ class PlayerDataDto {
 
   @IsOptional()
   @IsString()
-  phoneNumber?: string;
+  phoneNumber?: string | null;
   
   @IsOptional()
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => (value ? new Date(value) : null))
   @IsDate()
-  birthDate?: Date;
+  birthDate?: Date | null;
 }
 
 export class CreatePlayerEventDto {

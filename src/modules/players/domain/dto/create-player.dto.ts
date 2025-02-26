@@ -37,14 +37,14 @@ export class CreatePlayerDto {
   phoneNumber?: string;
 
   @IsOptional()
-  @Transform(({ value }) => new Date(value))
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  birthDate?: Date;
+  birthDate?: Date | null;
 
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  firstDepositDate?: Date;
+  firstDepositDate?: Date | null;
 
   @IsOptional()
   @IsInt()
@@ -53,7 +53,7 @@ export class CreatePlayerDto {
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  lastDepositDate?: Date;
+  lastDepositDate?: Date | null;
 
   @IsOptional()
   @IsInt()
@@ -70,7 +70,7 @@ export class CreatePlayerDto {
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  lastWithdrawalDate?: Date;
+  lastWithdrawalDate?: Date | null;
 
   @IsOptional()
   @IsInt()
@@ -95,12 +95,12 @@ export class CreatePlayerDto {
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  lastLoginDate?: Date;
+  lastLoginDate?: Date | null;
 
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  lastAccessDate?: Date;
+  lastAccessDate?: Date | null;
 
   @IsOptional()
   @IsEnum(PlayerStatus)
