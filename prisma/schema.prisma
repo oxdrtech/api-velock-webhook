@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  CANCELLED
+}
+
+enum PlayerStatus {
+  ACTIVE
+  NEW
+}
+
+model Player {
+  id                     String       @id @default(ulid())
+  externalId             String       @unique
+  tenantId               String
+  affiliateId            String
+  name                   String
+  email                  String       @unique
+  country                String
+  language               String
+  date                   DateTime
+  balance                Int          @default(0)
+  phoneNumber            String?
+  birthDate              DateTime?
+  firstDepositDate       DateTime?
+  firstDepositValue      Int?
+  lastDepositDate        DateTime?
+  lastDepositValue       Int?
+  totalDepositCount      Int?
+  totalDepositValue      Int?
+  lastWithdrawalDate     DateTime?
+  lastWithdrawalValue    Int?
+  totalWithdrawalCount   Int?
+  totalWithdrawalValue   Int?
+  mostFrequentBetPair    String?
+  mostFrequentViewedPair String?
+  lastLoginDate          DateTime?
+  lastAccessDate         DateTime?
+  playerStatus           PlayerStatus @default(NEW)
+  deposits               Deposit[]
+  withdrawals            Withdraw[]
+  logins                 Login[]
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+
+  @@map("players")
+}
+
+model Deposit {
+  id            String   @id @default(ulid())
+  transactionId String   @unique
+  amount        Int
+  method        String
+  date          DateTime
+  currency      String
+  isFirstTime   Boolean  @default(false)
+  depositStatus Status   @default(PENDING)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  playerId      String
+  player        Player   @relation(fields: [playerId], references: [id])
+
+  @@map("deposits")
+}
+
+model Withdraw {
+  id            String   @id @default(ulid())
+  transactionId String   @unique
+  amount        Int
+  method        String
+  date          DateTime
+  currency      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  playerId      String
+  player        Player   @relation(fields: [playerId], references: [id])
+
+  @@map("withdraws")
+}
+
+model Login {
+  id        String   @id @default(ulid())
+  ipAddress String
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id])
+
+  @@map("logins")
+}
