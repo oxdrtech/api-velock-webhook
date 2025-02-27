@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('PENDING', 'APPROVED', 'CANCELLED');
+CREATE TYPE "Status" AS ENUM ('PENDING', 'APPROVED');
 
 -- CreateEnum
 CREATE TYPE "PlayerStatus" AS ENUM ('ACTIVE', 'NEW');
@@ -15,8 +15,9 @@ CREATE TABLE "players" (
     "country" TEXT NOT NULL,
     "language" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
+    "phoneCountryCode" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
     "balance" INTEGER NOT NULL DEFAULT 0,
-    "phoneNumber" TEXT,
     "birthDate" TIMESTAMP(3),
     "firstDepositDate" TIMESTAMP(3),
     "firstDepositValue" INTEGER,

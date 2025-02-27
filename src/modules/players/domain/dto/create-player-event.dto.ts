@@ -1,4 +1,4 @@
-import { IsString, IsEmail, ValidateNested, IsDate, IsOptional } from 'class-validator';
+import { IsString, IsEmail, ValidateNested, IsDate, IsOptional, IsInt } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
 class PlayerDataDto {
@@ -27,10 +27,16 @@ class PlayerDataDto {
   @IsDate()
   date: Date;
 
-  @IsOptional()
   @IsString()
-  phoneNumber?: string | null;
-  
+  phoneCountryCode: string;
+
+  @IsString()
+  phone: string;
+
+  @IsOptional()
+  @IsInt()
+  balance?: number;
+
   @IsOptional()
   @Transform(({ value }) => (value ? new Date(value) : null))
   @IsDate()

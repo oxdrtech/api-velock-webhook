@@ -28,13 +28,15 @@ export class CreatePlayerDto {
   @IsDate()
   date: Date;
 
+  @IsString()
+  phoneCountryCode: string;
+
+  @IsString()
+  phone: string;
+
   @IsOptional()
   @IsInt()
   balance?: number;
-
-  @IsOptional()
-  @IsString()
-  phoneNumber?: string;
 
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
