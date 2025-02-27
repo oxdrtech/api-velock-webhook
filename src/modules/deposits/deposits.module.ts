@@ -11,11 +11,14 @@ import { FindDepositByIdService } from './services/findDepositById.service';
 import { FindDepositsByPlayerIdService } from './services/findDepositsByPlayerId.service';
 import { PaydDepositService } from './services/paydDeposit.service';
 import { FindDepositByTransactionIdService } from './services/findDepositByTransactionId.service';
+import { SocketModule } from '../socket/socket.module';
+import { DepositsListener } from '../socket/infra/listeners/deposits.listener';
 
 @Module({
   imports: [
     PrismaModule,
     forwardRef(() => PlayersModule),
+    SocketModule,
   ],
   controllers: [
     DepositsController,
@@ -26,6 +29,7 @@ import { FindDepositByTransactionIdService } from './services/findDepositByTrans
     FindDepositByTransactionIdService,
     FindDepositsByPlayerIdService,
     PaydDepositService,
+    DepositsListener,
     {
       provide: DEPOSITS_SERVICE_TOKEN,
       useClass: DepositsRepository,

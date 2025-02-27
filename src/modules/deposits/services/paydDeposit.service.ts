@@ -7,6 +7,7 @@ import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceTo
 import { PaydDepositEventDto } from '../domain/dto/payd-deposit-event.dto';
 import { UpdateDepositDto } from '../domain/dto/update-deposit.dto';
 import { UpdatePlayerDto } from 'src/modules/players/domain/dto/update-player.dto';
+import { DepositsListener } from 'src/modules/socket/infra/listeners/deposits.listener';
 
 @Injectable()
 export class PaydDepositService {
@@ -15,6 +16,7 @@ export class PaydDepositService {
     private readonly depositsRepositories: IDepositsRepositories,
     @Inject(PLAYERS_SERVICE_TOKEN)
     private readonly playersRepositories: IPlayersRepositories,
+    private readonly depositsListener: DepositsListener,
   ) { }
 
   async execute(data: PaydDepositEventDto): Promise<Deposit> {
@@ -50,6 +52,10 @@ export class PaydDepositService {
       method: depositData.method,
     };
 
-    return await this.depositsRepositories.paydDeposit(depositTransactionIdExisting.id, updateDepositData);
+    const paydDeposit = await this.depositsRepositories.paydDeposit(depositTransactionIdExisting.id, updateDepositData);
+
+    this.depositsListener.emitDepositPayd(paydDeposit);
+
+    return paydDeposit;
   }
 }

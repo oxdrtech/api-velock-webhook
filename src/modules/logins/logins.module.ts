@@ -9,11 +9,14 @@ import { PlayersRepository } from '../players/infra/players.repository';
 import { CreateLoginService } from './services/createLogin.service';
 import { FindLoginsByPlayerIdService } from './services/findLoginsByPlayerId.service';
 import { FindLoginByIdService } from './services/findLoginById.service';
+import { SocketModule } from '../socket/socket.module';
+import { LoginsListener } from '../socket/infra/listeners/logins.listener';
 
 @Module({
   imports: [
     PrismaModule,
     forwardRef(() => PlayersModule),
+    SocketModule,
   ],
   controllers: [
     LoginsController,
@@ -22,6 +25,7 @@ import { FindLoginByIdService } from './services/findLoginById.service';
     CreateLoginService,
     FindLoginByIdService,
     FindLoginsByPlayerIdService,
+    LoginsListener,
     {
       provide: LOGINS_SERVICE_TOKEN,
       useClass: LoginsRepository,

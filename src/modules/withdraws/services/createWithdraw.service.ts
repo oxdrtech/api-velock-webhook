@@ -7,6 +7,7 @@ import { Withdraw } from '@prisma/client';
 import { UpdatePlayerDto } from 'src/modules/players/domain/dto/update-player.dto';
 import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
 import { CreateWithdrawEventDto } from '../domain/dto/create-withdraw-event.dto';
+import { WithdrawsListener } from 'src/modules/socket/infra/listeners/withsraws.listener';
 
 @Injectable()
 export class CreateWithdrawService {
@@ -15,6 +16,7 @@ export class CreateWithdrawService {
     private readonly withdrawsRepositories: IWithdrawsRepositories,
     @Inject(PLAYERS_SERVICE_TOKEN)
     private readonly playersRepositories: IPlayersRepositories,
+    private readonly withdrawsListener: WithdrawsListener,
   ) { }
 
   async execute(data: CreateWithdrawEventDto): Promise<Withdraw> {
@@ -46,6 +48,10 @@ export class CreateWithdrawService {
       playerId: playerExternalIdExisting.id,
     };
 
-    return await this.withdrawsRepositories.createWithdraw(updateWithdrawData);
+    const createdWithdraw = await this.withdrawsRepositories.createWithdraw(updateWithdrawData);
+
+    this.withdrawsListener.emitWithdrawCreated(createdWithdraw);
+
+    return createdWithdraw;
   }
 }

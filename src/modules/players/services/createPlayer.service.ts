@@ -4,14 +4,14 @@ import { IPlayersRepositories } from '../domain/repositories/IPlayers.repositori
 import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
 import { CreatePlayerEventDto } from '../domain/dto/create-player-event.dto';
 import { CreatePlayerDto } from '../domain/dto/create-player.dto';
-import { PlayersPublisher } from '../infra/players.publisher';
+import { PlayersListener } from 'src/modules/socket/infra/listeners/players.listener';
 
 @Injectable()
 export class CreatePlayerService {
   constructor(
     @Inject(PLAYERS_SERVICE_TOKEN)
     private readonly playerRepositories: IPlayersRepositories,
-    private readonly playerPublisher: PlayersPublisher,
+    private readonly playerListener: PlayersListener,
   ) { }
 
   async execute(data: CreatePlayerEventDto): Promise<Player> {
@@ -41,7 +41,7 @@ export class CreatePlayerService {
 
     const createdPlayer = await this.playerRepositories.createPlayer(updatePlayerData);
 
-    this.playerPublisher.publishPlayerCreatedEvent(createdPlayer);
+    this.playerListener.emitPlayerCreated(createdPlayer);
 
     return createdPlayer;
   }

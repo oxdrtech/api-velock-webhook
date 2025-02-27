@@ -6,6 +6,7 @@ import { Deposit } from '@prisma/client';
 import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IPlayers.repositories';
 import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
 import { CreateDepositEventDto } from '../domain/dto/create-deposit-event.dto';
+import { DepositsListener } from 'src/modules/socket/infra/listeners/deposits.listener';
 
 @Injectable()
 export class CreateDepositService {
@@ -14,6 +15,7 @@ export class CreateDepositService {
     private readonly depositsRepositories: IDepositsRepositories,
     @Inject(PLAYERS_SERVICE_TOKEN)
     private readonly playersRepositories: IPlayersRepositories,
+    private readonly depositsListener: DepositsListener,
   ) { }
 
   async execute(data: CreateDepositEventDto): Promise<Deposit> {
@@ -36,6 +38,10 @@ export class CreateDepositService {
       playerId: playerExternalIdExisting.id,
     };
 
-    return await this.depositsRepositories.createDeposit(updateDepositData);
+    const createdDeposit = await this.depositsRepositories.createDeposit(updateDepositData);
+
+    this.depositsListener.emitDepositCreated(createdDeposit);
+
+    return createdDeposit;
   }
 }

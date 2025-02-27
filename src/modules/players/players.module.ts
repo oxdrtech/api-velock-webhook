@@ -12,8 +12,8 @@ import { WithdrawsModule } from '../withdraws/withdraws.module';
 import { LoginsModule } from '../logins/logins.module';
 import { FindPlayerByExternalIdService } from './services/findPlayerByExternalId.service';
 import { FindPlayerByIdService } from './services/findPlayerById.service';
-import { WebSocketModule } from '../websocket/websocket.module';
-import { PlayersPublisher } from './infra/players.publisher';
+import { SocketModule } from '../socket/socket.module';
+import { PlayersListener } from '../socket/infra/listeners/players.listener';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { PlayersPublisher } from './infra/players.publisher';
     DepositsModule,
     WithdrawsModule,
     LoginsModule,
-    WebSocketModule,
+    SocketModule,
   ],
   controllers: [
     PlayersController,
@@ -33,7 +33,7 @@ import { PlayersPublisher } from './infra/players.publisher';
     FindPlayerByEmailService,
     FindPlayersService,
     UpdatePlayerService,
-    PlayersPublisher,
+    PlayersListener,
     {
       provide: PLAYERS_SERVICE_TOKEN,
       useClass: PlayersRepository,

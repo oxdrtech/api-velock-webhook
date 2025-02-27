@@ -7,6 +7,7 @@ import { IPlayersRepositories } from "src/modules/players/domain/repositories/IP
 import { UpdatePlayerDto } from "src/modules/players/domain/dto/update-player.dto";
 import { CreateLoginEventDto } from "../domain/dto/create-login-event.dto";
 import { CreateLoginDto } from "../domain/dto/create-login.dto";
+import { LoginsListener } from "src/modules/socket/infra/listeners/logins.listener";
 
 @Injectable()
 export class CreateLoginService {
@@ -15,6 +16,7 @@ export class CreateLoginService {
     private readonly loginsRepositories: ILoginsRepositories,
     @Inject(PLAYERS_SERVICE_TOKEN)
     private readonly playersRepositories: IPlayersRepositories,
+    private readonly loginsListener: LoginsListener,
   ) { }
 
   async execute(data: CreateLoginEventDto): Promise<Login> {
@@ -36,6 +38,10 @@ export class CreateLoginService {
       playerId: playerExternalIdExisting.id,
     };
 
-    return await this.loginsRepositories.createLogin(updateLoginData);
+    const createdLogin = await this.loginsRepositories.createLogin(updateLoginData);
+
+    this.loginsListener.emitLoginCreated(createdLogin);
+
+    return createdLogin;
   }
 }

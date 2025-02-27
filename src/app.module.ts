@@ -5,7 +5,7 @@ import { PlayersModule } from './modules/players/players.module';
 import { DepositsModule } from './modules/deposits/deposits.module';
 import { WithdrawsModule } from './modules/withdraws/withdraws.module';
 import { LoginsModule } from './modules/logins/logins.module';
-import { WebSocketModule } from './modules/websocket/websocket.module';
+import { SocketModule } from './modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { WebSocketModule } from './modules/websocket/websocket.module';
     DepositsModule,
     WithdrawsModule,
     LoginsModule,
-    WebSocketModule,
+    SocketModule,
   ],
   controllers: [
     AppController,

@@ -10,11 +10,14 @@ import { PLAYERS_SERVICE_TOKEN } from '../logins/utils/playersServiceToken';
 import { FindWithdrawByIdService } from './services/findWithdrawById.service';
 import { FindWithdrawByTransactionIdService } from './services/findWithdrawByTransactionId.service';
 import { FindWithdrawsByPlayerIdService } from './services/findWithdrawsByPlayerId.service';
+import { SocketModule } from '../socket/socket.module';
+import { WithdrawsListener } from '../socket/infra/listeners/withsraws.listener';
 
 @Module({
   imports: [
     PrismaModule,
     forwardRef(() => PlayersModule),
+    SocketModule,
   ],
   controllers: [
     WithdrawsController,
@@ -24,6 +27,7 @@ import { FindWithdrawsByPlayerIdService } from './services/findWithdrawsByPlayer
     FindWithdrawByIdService,
     FindWithdrawByTransactionIdService,
     FindWithdrawsByPlayerIdService,
+    WithdrawsListener,
     {
       provide: WITHDRAW_SERVICE_TOKEN,
       useClass: WithdrawRepository,
