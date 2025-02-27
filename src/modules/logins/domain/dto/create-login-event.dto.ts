@@ -23,6 +23,12 @@ class LoginDataDto {
   @Transform(({ value }) => new Date(value))
   @IsDate()
   date: Date;
+
+  @IsString()
+  phoneCountryCode: string;
+
+  @IsString()
+  phone: string;
 }
 
 export class CreateLoginEventDto {

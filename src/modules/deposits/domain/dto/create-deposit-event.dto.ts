@@ -29,6 +29,12 @@ class DepositDataDto {
 
   @IsString()
   currency: string;
+
+  @IsString()
+  phoneCountryCode: string;
+
+  @IsString()
+  phone: string;
 }
 
 export class CreateDepositEventDto {
