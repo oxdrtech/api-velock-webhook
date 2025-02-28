@@ -46,10 +46,10 @@ export class PaydDepositService {
       transactionId: depositData.id,
       amount: depositData.amount,
       currency: depositData.currency,
-      date: depositData.date,
+      date: depositData.date ?? depositTransactionIdExisting.date,
       depositStatus: "APPROVED",
       isFirstTime: depositData.isFirstTime,
-      method: depositData.method,
+      method: depositData.method ?? depositTransactionIdExisting.method,
     };
 
     const paydDeposit = await this.depositsRepositories.paydDeposit(depositTransactionIdExisting.id, updateDepositData);

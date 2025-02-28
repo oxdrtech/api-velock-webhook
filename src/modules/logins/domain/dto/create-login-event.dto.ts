@@ -1,34 +1,41 @@
 import { Transform, Type } from "class-transformer";
-import { IsDate, IsEmail, IsString, ValidateNested } from "class-validator";
+import { IsDate, IsEmail, IsOptional, IsString, ValidateNested } from "class-validator";
 
 class LoginDataDto {
   @IsString()
   userId: string;
 
+  @IsOptional()
   @IsString()
-  tenantId: string;
+  tenantId?: string | null;
 
+  @IsOptional()
   @IsString()
-  affiliateId: string;
+  affiliateId?: string | null;
 
+  @IsOptional()
   @IsString()
-  name: string;
+  name?: string | null;
 
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string | null;
 
   @IsString()
   ipAddress: string;
 
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  date: Date;
+  date?: Date | null;
 
+  @IsOptional()
   @IsString()
-  phoneCountryCode: string;
+  phoneCountryCode?: string | null;
 
+  @IsOptional()
   @IsString()
-  phone: string;
+  phone: string | null;
 }
 
 export class CreateLoginEventDto {

@@ -7,8 +7,6 @@ export const loginsSelectedFields = {
     select: {
       id: true,
       externalId: true,
-      tenantId: true,
-      name: true,
       email: true,
     },
   },

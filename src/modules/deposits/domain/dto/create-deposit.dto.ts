@@ -9,15 +9,18 @@ export class CreateDepositDto {
   @IsInt()
   amount: number;
 
+  @IsOptional()
   @IsString()
-  method: string;
+  method?: string | null;
 
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  date: Date;
+  date?: Date | null;
 
+  @IsOptional()
   @IsString()
-  currency: string;
+  currency?: string | null;
 
   @IsOptional()
   @IsBoolean()

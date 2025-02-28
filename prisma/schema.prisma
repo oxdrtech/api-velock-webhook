@@ -26,15 +26,15 @@ enum PlayerStatus {
 model Player {
   id                     String       @id @default(ulid())
   externalId             String       @unique
-  tenantId               String
-  affiliateId            String
-  name                   String
+  tenantId               String?
+  affiliateId            String?
+  name                   String?
   email                  String       @unique
-  country                String
-  language               String
-  date                   DateTime
-  phoneCountryCode       String
-  phone                  String
+  country                String?
+  language               String?
+  date                   DateTime?
+  phoneCountryCode       String?
+  phone                  String?
   balance                Int          @default(0)
   birthDate              DateTime?
   firstDepositDate       DateTime?
@@ -65,9 +65,9 @@ model Deposit {
   id            String   @id @default(ulid())
   transactionId String   @unique
   amount        Int
-  method        String
-  date          DateTime
-  currency      String
+  method        String?
+  date          DateTime?
+  currency      String?
   isFirstTime   Boolean  @default(false)
   depositStatus Status   @default(PENDING)
   createdAt     DateTime @default(now())
@@ -82,9 +82,9 @@ model Withdraw {
   id            String   @id @default(ulid())
   transactionId String   @unique
   amount        Int
-  method        String
-  date          DateTime
-  currency      String
+  method        String?
+  date          DateTime?
+  currency      String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   playerId      String
@@ -96,7 +96,7 @@ model Withdraw {
 model Login {
   id        String   @id @default(ulid())
   ipAddress String
-  date      DateTime
+  date      DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   playerId  String

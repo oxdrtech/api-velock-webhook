@@ -5,40 +5,48 @@ class PlayerDataDto {
   @IsString()
   userId: string;
 
+  @IsOptional()
   @IsString()
-  tenantId: string;
+  tenantId?: string | null;
 
+  @IsOptional()
   @IsString()
-  affiliateId: string;
+  affiliateId?: string | null;
 
+  @IsOptional()
   @IsString()
-  name: string;
+  name?: string | null;
 
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsString()
-  country: string;
+  country?: string | null;
 
+  @IsOptional()
   @IsString()
-  language: string;
+  language?: string | null;
 
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  date: Date;
+  date: Date | null;
 
+  @IsOptional()
   @IsString()
-  phoneCountryCode: string;
+  phoneCountryCode?: string | null;
 
+  @IsOptional()
   @IsString()
-  phone: string;
+  phone?: string | null;
 
   @IsOptional()
   @IsInt()
   balance?: number;
 
   @IsOptional()
-  @Transform(({ value }) => (value ? new Date(value) : null))
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
   birthDate?: Date | null;
 }

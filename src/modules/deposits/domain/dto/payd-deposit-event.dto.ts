@@ -1,5 +1,5 @@
 import { Transform, Type } from "class-transformer";
-import { IsBoolean, IsDate, IsEmail, IsInt, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsDate, IsEmail, IsInt, IsOptional, IsString, ValidateNested } from "class-validator";
 
 class DepositDataDto {
   @IsString()
@@ -8,36 +8,45 @@ class DepositDataDto {
   @IsString()
   userId: string;
 
+  @IsOptional()
   @IsString()
-  tenantId: string;
+  tenantId?: string | null;
 
+  @IsOptional()
   @IsString()
-  name: string;
+  name?: string | null;
 
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string | null;
 
   @IsInt()
   amount: number;
 
+  @IsOptional()
   @IsString()
-  method: string;
+  method?: string | null;
 
+  @IsOptional()
   @IsBoolean()
-  isFirstTime: boolean;
+  isFirstTime?: boolean;
 
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  date: Date;
+  date?: Date | null;
 
+  @IsOptional()
   @IsString()
-  currency: string;
+  currency?: string | null;
 
+  @IsOptional()
   @IsString()
-  phoneCountryCode: string;
+  phoneCountryCode?: string | null;
 
+  @IsOptional()
   @IsString()
-  phone: string;
+  phone: string | null;
 }
 
 export class PaydDepositEventDto {

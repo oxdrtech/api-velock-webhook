@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsDate, IsInt, IsString } from "class-validator";
+import { IsDate, IsInt, IsOptional, IsString } from "class-validator";
 
 export class CreateWithdrawDto {
   @IsString()
@@ -8,15 +8,18 @@ export class CreateWithdrawDto {
   @IsInt()
   amount: number;
 
+  @IsOptional()
   @IsString()
-  method: string;
+  method?: string | null;
 
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  date: Date;
+  date?: Date | null;
 
+  @IsOptional()
   @IsString()
-  currency: string;
+  currency?: string | null;
 
   @IsString()
   playerId: string;

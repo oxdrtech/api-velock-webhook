@@ -1,13 +1,14 @@
 import { Transform } from "class-transformer";
-import { IsDate, IsString } from "class-validator";
+import { IsDate, IsOptional, IsString } from "class-validator";
 
 export class CreateLoginDto {
   @IsString()
   ipAddress: string;
 
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  date: Date;
+  date?: Date | null;
 
   @IsString()
   playerId: string;

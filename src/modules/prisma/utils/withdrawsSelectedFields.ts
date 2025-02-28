@@ -10,8 +10,6 @@ export const withdrawsSelectedFields = {
     select: {
       id: true,
       externalId: true,
-      tenantId: true,
-      name: true,
       email: true,
     },
   },

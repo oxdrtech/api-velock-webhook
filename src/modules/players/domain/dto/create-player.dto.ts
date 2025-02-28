@@ -6,33 +6,41 @@ export class CreatePlayerDto {
   @IsString()
   externalId: string;
 
+  @IsOptional()
   @IsString()
-  tenantId: string;
+  tenantId?: string | null;
 
+  @IsOptional()
   @IsString()
-  affiliateId: string;
+  affiliateId?: string | null;
 
+  @IsOptional()
   @IsString()
-  name: string;
+  name?: string | null;
 
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsString()
-  country: string;
+  country?: string | null;
 
+  @IsOptional()
   @IsString()
-  language: string;
+  language?: string | null;
 
-  @Transform(({ value }) => new Date(value))
+  @IsOptional()
+  @Transform(({ value }) => value ? new Date(value) : null)
   @IsDate()
-  date: Date;
+  date?: Date | null;
 
+  @IsOptional()
   @IsString()
-  phoneCountryCode: string;
+  phoneCountryCode?: string | null;
 
+  @IsOptional()
   @IsString()
-  phone: string;
+  phone?: string | null;
 
   @IsOptional()
   @IsInt()
@@ -50,7 +58,7 @@ export class CreatePlayerDto {
 
   @IsOptional()
   @IsInt()
-  firstDepositValue?: number;
+  firstDepositValue?: number | null;
 
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
@@ -59,15 +67,15 @@ export class CreatePlayerDto {
 
   @IsOptional()
   @IsInt()
-  lastDepositValue?: number;
+  lastDepositValue?: number | null;
 
   @IsOptional()
   @IsInt()
-  totalDepositCount?: number;
+  totalDepositCount?: number | null;
 
   @IsOptional()
   @IsInt()
-  totalDepositValue?: number;
+  totalDepositValue?: number | null;
 
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)
@@ -76,23 +84,23 @@ export class CreatePlayerDto {
 
   @IsOptional()
   @IsInt()
-  lastWithdrawalValue?: number;
+  lastWithdrawalValue?: number | null;
 
   @IsOptional()
   @IsInt()
-  totalWithdrawalCount?: number;
+  totalWithdrawalCount?: number | null;
 
   @IsOptional()
   @IsInt()
-  totalWithdrawalValue?: number;
+  totalWithdrawalValue?: number | null;
 
   @IsOptional()
   @IsString()
-  mostFrequentBetPair?: string;
+  mostFrequentBetPair?: string | null;
 
   @IsOptional()
   @IsString()
-  mostFrequentViewedPair?: string;
+  mostFrequentViewedPair?: string | null;
 
   @IsOptional()
   @Transform(({ value }) => value ? new Date(value) : null)

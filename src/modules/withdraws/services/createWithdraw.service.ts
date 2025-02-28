@@ -42,9 +42,9 @@ export class CreateWithdrawService {
     const updateWithdrawData: CreateWithdrawDto = {
       transactionId: withdrawData.id,
       amount: withdrawData.amount,
-      currency: withdrawData.currency,
-      date: withdrawData.date,
       method: withdrawData.method,
+      date: withdrawData.date,
+      currency: withdrawData.currency,
       playerId: playerExternalIdExisting.id,
     };
 
