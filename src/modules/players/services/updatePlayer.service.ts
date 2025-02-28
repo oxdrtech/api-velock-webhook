@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IPlayersRepositories } from '../domain/repositories/IPlayers.repositories';
 import { UpdatePlayerDto } from '../domain/dto/update-player.dto';
 import { Player } from '@prisma/client';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
+import { PLAYERS_SERVICE_TOKEN } from '../utils/playersServiceToken';
 
 @Injectable()
 export class UpdatePlayerService {

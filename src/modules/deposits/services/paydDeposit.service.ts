@@ -3,11 +3,11 @@ import { DEPOSITS_SERVICE_TOKEN } from '../utils/depositsServiceToken';
 import { IDepositsRepositories } from '../domain/repositories/IDeposits.repositories';
 import { Deposit, PlayerStatus } from '@prisma/client';
 import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IPlayers.repositories';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
 import { PaydDepositEventDto } from '../domain/dto/payd-deposit-event.dto';
 import { UpdateDepositDto } from '../domain/dto/update-deposit.dto';
 import { UpdatePlayerDto } from 'src/modules/players/domain/dto/update-player.dto';
 import { DepositsListener } from 'src/modules/socket/infra/listeners/deposits.listener';
+import { PLAYERS_SERVICE_TOKEN } from 'src/modules/players/utils/playersServiceToken';
 
 @Injectable()
 export class PaydDepositService {

@@ -1,13 +1,13 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { LOGINS_SERVICE_TOKEN } from "src/modules/players/utils/loginsServiceToken";
 import { ILoginsRepositories } from "../domain/repositories/ILogins.repositories";
 import { Login } from "@prisma/client";
-import { PLAYERS_SERVICE_TOKEN } from "../utils/playersServiceToken";
 import { IPlayersRepositories } from "src/modules/players/domain/repositories/IPlayers.repositories";
 import { UpdatePlayerDto } from "src/modules/players/domain/dto/update-player.dto";
 import { CreateLoginEventDto } from "../domain/dto/create-login-event.dto";
 import { CreateLoginDto } from "../domain/dto/create-login.dto";
 import { LoginsListener } from "src/modules/socket/infra/listeners/logins.listener";
+import { LOGINS_SERVICE_TOKEN } from "../utils/loginsServiceToken";
+import { PLAYERS_SERVICE_TOKEN } from "src/modules/players/utils/playersServiceToken";
 
 @Injectable()
 export class CreateLoginService {

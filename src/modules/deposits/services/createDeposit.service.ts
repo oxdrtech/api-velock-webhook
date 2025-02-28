@@ -4,9 +4,9 @@ import { IDepositsRepositories } from '../domain/repositories/IDeposits.reposito
 import { CreateDepositDto } from '../domain/dto/create-deposit.dto';
 import { Deposit } from '@prisma/client';
 import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IPlayers.repositories';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
 import { CreateDepositEventDto } from '../domain/dto/create-deposit-event.dto';
 import { DepositsListener } from 'src/modules/socket/infra/listeners/deposits.listener';
+import { PLAYERS_SERVICE_TOKEN } from 'src/modules/players/utils/playersServiceToken';
 
 @Injectable()
 export class CreateDepositService {

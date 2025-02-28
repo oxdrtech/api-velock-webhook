@@ -1,9 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { DEPOSITS_SERVICE_TOKEN } from '../utils/depositsServiceToken';
 import { IDepositsRepositories } from '../domain/repositories/IDeposits.repositories';
 import { Deposit } from '@prisma/client';
 import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IPlayers.repositories';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
+import { PLAYERS_SERVICE_TOKEN } from 'src/modules/players/utils/playersServiceToken';
+import { DEPOSITS_SERVICE_TOKEN } from '../utils/depositsServiceToken';
 
 @Injectable()
 export class FindDepositsByPlayerIdService {

@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Player } from '@prisma/client';
 import { IPlayersRepositories } from '../domain/repositories/IPlayers.repositories';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
+import { PLAYERS_SERVICE_TOKEN } from '../utils/playersServiceToken';
 
 @Injectable()
 export class FindPlayerByEmailService {

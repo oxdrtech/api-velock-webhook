@@ -6,13 +6,13 @@ import { CreateDepositService } from './services/createDeposit.service';
 import { DepositsRepository } from './infra/deposits.repository';
 import { PlayersModule } from '../players/players.module';
 import { PlayersRepository } from '../players/infra/players.repository';
-import { PLAYERS_SERVICE_TOKEN } from '../logins/utils/playersServiceToken';
 import { FindDepositByIdService } from './services/findDepositById.service';
 import { FindDepositsByPlayerIdService } from './services/findDepositsByPlayerId.service';
 import { PaydDepositService } from './services/paydDeposit.service';
 import { FindDepositByTransactionIdService } from './services/findDepositByTransactionId.service';
 import { SocketModule } from '../socket/socket.module';
 import { DepositsListener } from '../socket/infra/listeners/deposits.listener';
+import { PLAYERS_SERVICE_TOKEN } from '../players/utils/playersServiceToken';
 
 @Module({
   imports: [

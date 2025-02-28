@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { Player } from '@prisma/client';
 import { IPlayersRepositories } from '../domain/repositories/IPlayers.repositories';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
+import { PLAYERS_SERVICE_TOKEN } from '../utils/playersServiceToken';
 import { CreatePlayerEventDto } from '../domain/dto/create-player-event.dto';
 import { CreatePlayerDto } from '../domain/dto/create-player.dto';
 import { PlayersListener } from 'src/modules/socket/infra/listeners/players.listener';

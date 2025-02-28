@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
+import { PLAYERS_SERVICE_TOKEN } from '../utils/playersServiceToken';
 import { IPlayersRepositories } from '../domain/repositories/IPlayers.repositories';
 import { Player } from '@prisma/client';
 

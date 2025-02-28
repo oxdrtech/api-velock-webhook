@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { LOGINS_SERVICE_TOKEN } from 'src/modules/players/utils/loginsServiceToken';
 import { ILoginsRepositories } from '../domain/repositories/ILogins.repositories';
 import { Login } from '@prisma/client';
+import { LOGINS_SERVICE_TOKEN } from '../utils/loginsServiceToken';
 
 @Injectable()
 export class FindLoginByIdService {

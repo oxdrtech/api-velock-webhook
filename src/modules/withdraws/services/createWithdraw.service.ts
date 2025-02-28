@@ -5,9 +5,9 @@ import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IP
 import { CreateWithdrawDto } from '../domain/dto/create-withdraw.dto';
 import { Withdraw } from '@prisma/client';
 import { UpdatePlayerDto } from 'src/modules/players/domain/dto/update-player.dto';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
 import { CreateWithdrawEventDto } from '../domain/dto/create-withdraw-event.dto';
 import { WithdrawsListener } from 'src/modules/socket/infra/listeners/withsraws.listener';
+import { PLAYERS_SERVICE_TOKEN } from 'src/modules/players/utils/playersServiceToken';
 
 @Injectable()
 export class CreateWithdrawService {

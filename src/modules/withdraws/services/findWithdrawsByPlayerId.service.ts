@@ -3,7 +3,7 @@ import { Withdraw } from '@prisma/client';
 import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IPlayers.repositories';
 import { WITHDRAW_SERVICE_TOKEN } from '../utils/withdrawsServiceToken';
 import { IWithdrawsRepositories } from '../domain/repositories/IWithdraw.repositories';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
+import { PLAYERS_SERVICE_TOKEN } from 'src/modules/players/utils/playersServiceToken';
 
 @Injectable()
 export class FindWithdrawsByPlayerIdService {

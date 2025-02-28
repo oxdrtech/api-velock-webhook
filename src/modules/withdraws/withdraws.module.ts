@@ -6,12 +6,12 @@ import { WITHDRAW_SERVICE_TOKEN } from './utils/withdrawsServiceToken';
 import { WithdrawRepository } from './infra/withdraws.repository';
 import { CreateWithdrawService } from './services/createWithdraw.service';
 import { PlayersRepository } from '../players/infra/players.repository';
-import { PLAYERS_SERVICE_TOKEN } from '../logins/utils/playersServiceToken';
 import { FindWithdrawByIdService } from './services/findWithdrawById.service';
 import { FindWithdrawByTransactionIdService } from './services/findWithdrawByTransactionId.service';
 import { FindWithdrawsByPlayerIdService } from './services/findWithdrawsByPlayerId.service';
 import { SocketModule } from '../socket/socket.module';
 import { WithdrawsListener } from '../socket/infra/listeners/withsraws.listener';
+import { PLAYERS_SERVICE_TOKEN } from '../players/utils/playersServiceToken';
 
 @Module({
   imports: [

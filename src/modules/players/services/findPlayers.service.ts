@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IPlayersRepositories } from '../domain/repositories/IPlayers.repositories';
 import { Player } from '@prisma/client';
-import { PLAYERS_SERVICE_TOKEN } from 'src/modules/logins/utils/playersServiceToken';
+import { PLAYERS_SERVICE_TOKEN } from '../utils/playersServiceToken';
 
 @Injectable()
 export class FindPlayersService {
