@@ -45,7 +45,7 @@ export class PaydDepositService {
     const updateDepositData: UpdateDepositDto = {
       transactionId: depositData.id,
       amount: depositData.amount,
-      currency: depositData.currency,
+      currency: depositData.currency ?? depositTransactionIdExisting.currency,
       date: depositData.date ?? depositTransactionIdExisting.date,
       depositStatus: "APPROVED",
       isFirstTime: depositData.isFirstTime,

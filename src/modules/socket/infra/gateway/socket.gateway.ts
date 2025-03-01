@@ -12,10 +12,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private logger: Logger = new Logger('SocketGateway');
 
   handleConnection(client: Socket) {
-    this.logger.log(`Client connected: ${client.id}`);
+    this.logger.log(`✅ Client connected: ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log(`Client disconnected: ${client.id}`);
+    this.logger.log(`❌ Client disconnected: ${client.id}`);
   }
 }
