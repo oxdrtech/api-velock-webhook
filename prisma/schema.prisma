@@ -62,45 +62,45 @@ model Player {
 }
 
 model Deposit {
-  id            String   @id @default(ulid())
-  transactionId String   @unique
+  id            String    @id @default(ulid())
+  transactionId String    @unique
   amount        Int
   method        String?
   date          DateTime?
   currency      String?
-  isFirstTime   Boolean  @default(false)
-  depositStatus Status   @default(PENDING)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  isFirstTime   Boolean   @default(false)
+  depositStatus Status    @default(PENDING)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   playerId      String
-  player        Player   @relation(fields: [playerId], references: [id])
+  player        Player    @relation(fields: [playerId], references: [id])
 
   @@map("deposits")
 }
 
 model Withdraw {
-  id            String   @id @default(ulid())
-  transactionId String   @unique
+  id            String    @id @default(ulid())
+  transactionId String    @unique
   amount        Int
   method        String?
   date          DateTime?
   currency      String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   playerId      String
-  player        Player   @relation(fields: [playerId], references: [id])
+  player        Player    @relation(fields: [playerId], references: [id])
 
   @@map("withdraws")
 }
 
 model Login {
-  id        String   @id @default(ulid())
+  id        String    @id @default(ulid())
   ipAddress String
   date      DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   playerId  String
-  player    Player   @relation(fields: [playerId], references: [id])
+  player    Player    @relation(fields: [playerId], references: [id])
 
   @@map("logins")
 }
