@@ -8,7 +8,7 @@ export class SocketService {
     private readonly socketGateway: SocketGateway,
   ) { }
 
-  emit(event: string, data: Player | Deposit | Withdraw | Login) {
-    this.socketGateway.server.emit(event, data);
+  emit(event: string, data: Player | Deposit | Withdraw | Login, updatedPlayer?: Player) {
+    this.socketGateway.server.emit(event, { data, updatedPlayer });
   }
 }

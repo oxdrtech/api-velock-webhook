@@ -40,7 +40,8 @@ export class CreateLoginService {
 
     const createdLogin = await this.loginsRepositories.createLogin(updateLoginData);
 
-    this.loginsListener.emitLoginCreated(createdLogin);
+    const updatedPlayer = await this.playersRepositories.findPlayerByExternalId(loginData.userId);
+    this.loginsListener.emitLoginCreated(createdLogin, updatedPlayer);
 
     return createdLogin;
   }

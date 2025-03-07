@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SocketService } from '../../services/socket.service';
 import { WITHDRAWS_EVENTS } from '../../domain/events/withdraws.events';
-import { Withdraw } from '@prisma/client';
+import { Player, Withdraw } from '@prisma/client';
 
 @Injectable()
 export class WithdrawsListener {
@@ -9,7 +9,7 @@ export class WithdrawsListener {
     private readonly socketService: SocketService,
   ) { }
 
-  emitWithdrawCreated(withdrawData: Withdraw) {
-    this.socketService.emit(WITHDRAWS_EVENTS.CREATED, withdrawData);
+  emitWithdrawCreated(withdrawData: Withdraw, updatedPlayer: Player) {
+    this.socketService.emit(WITHDRAWS_EVENTS.CREATED, withdrawData, updatedPlayer);
   }
 }

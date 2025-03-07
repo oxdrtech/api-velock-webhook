@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SocketService } from '../../services/socket.service';
 import { DEPOSITS_EVENTS } from '../../domain/events/deposits.events';
-import { Deposit } from '@prisma/client';
+import { Deposit, Player } from '@prisma/client';
 
 @Injectable()
 export class DepositsListener {
@@ -9,11 +9,11 @@ export class DepositsListener {
     private readonly socketService: SocketService,
   ) { }
 
-  emitDepositCreated(depositData: Deposit) {
-    this.socketService.emit(DEPOSITS_EVENTS.CREATED, depositData);
+  emitDepositCreated(depositData: Deposit, updatedPlayer: Player) {
+    this.socketService.emit(DEPOSITS_EVENTS.CREATED, depositData, updatedPlayer);
   }
 
-  emitDepositPayd(depositData: Deposit) {
-    this.socketService.emit(DEPOSITS_EVENTS.PAYD, depositData);
+  emitDepositPayd(depositData: Deposit, updatedPlayer: Player) {
+    this.socketService.emit(DEPOSITS_EVENTS.PAYD, depositData, updatedPlayer);
   }
 }

@@ -40,7 +40,8 @@ export class CreateDepositService {
 
     const createdDeposit = await this.depositsRepositories.createDeposit(updateDepositData);
 
-    this.depositsListener.emitDepositCreated(createdDeposit);
+    const updatedPlayer = await this.playersRepositories.findPlayerByExternalId(depositData.userId);
+    this.depositsListener.emitDepositCreated(createdDeposit, updatedPlayer);
 
     return createdDeposit;
   }

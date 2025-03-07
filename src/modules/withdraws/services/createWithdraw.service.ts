@@ -50,7 +50,8 @@ export class CreateWithdrawService {
 
     const createdWithdraw = await this.withdrawsRepositories.createWithdraw(updateWithdrawData);
 
-    this.withdrawsListener.emitWithdrawCreated(createdWithdraw);
+    const updatedPlayer = await this.playersRepositories.findPlayerByExternalId(withdrawData.userId);
+    this.withdrawsListener.emitWithdrawCreated(createdWithdraw, updatedPlayer);
 
     return createdWithdraw;
   }

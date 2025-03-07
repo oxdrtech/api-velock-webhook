@@ -54,7 +54,8 @@ export class PaydDepositService {
 
     const paydDeposit = await this.depositsRepositories.paydDeposit(depositTransactionIdExisting.id, updateDepositData);
 
-    this.depositsListener.emitDepositPayd(paydDeposit);
+    const updatedPlayer = await this.playersRepositories.findPlayerByExternalId(depositData.userId);
+    this.depositsListener.emitDepositPayd(paydDeposit, updatedPlayer);
 
     return paydDeposit;
   }
