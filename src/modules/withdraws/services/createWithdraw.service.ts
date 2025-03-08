@@ -21,6 +21,7 @@ export class CreateWithdrawService {
 
   async execute(data: CreateWithdrawEventDto): Promise<Withdraw> {
     const { data: withdrawData } = data;
+
     const [playerExternalIdExisting, withdrawIdExisting] = await Promise.all([
       this.playersRepositories.findPlayerByExternalId(withdrawData.userId),
       this.withdrawsRepositories.findWithdrawByTransactionId(withdrawData.id),
@@ -29,19 +30,21 @@ export class CreateWithdrawService {
     if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
     if (withdrawIdExisting) throw new BadRequestException('Esse saque já foi registrado');
 
+    const withdrawAmountInCents = Math.round(withdrawData.amount * 100);
+
     const updatePlayerData: UpdatePlayerDto = {
-      balance: (playerExternalIdExisting.balance ?? 0) - (withdrawData.amount ?? 0),
+      balance: (playerExternalIdExisting.balance ?? 0) - withdrawAmountInCents,
       lastWithdrawalDate: new Date(),
-      lastWithdrawalValue: withdrawData.amount ?? playerExternalIdExisting.lastWithdrawalValue ?? 0,
+      lastWithdrawalValue: withdrawAmountInCents ?? playerExternalIdExisting.lastWithdrawalValue ?? 0,
       totalWithdrawalCount: (playerExternalIdExisting.totalWithdrawalCount ?? 0) + 1,
-      totalWithdrawalValue: (playerExternalIdExisting.totalWithdrawalValue ?? 0) + (withdrawData.amount ?? 0)
+      totalWithdrawalValue: (playerExternalIdExisting.totalWithdrawalValue ?? 0) + withdrawAmountInCents,
     };
 
     await this.playersRepositories.updatePlayer(playerExternalIdExisting.id, updatePlayerData);
 
     const updateWithdrawData: CreateWithdrawDto = {
       transactionId: withdrawData.id,
-      amount: withdrawData.amount,
+      amount: withdrawAmountInCents,
       method: withdrawData.method,
       date: withdrawData.date,
       currency: withdrawData.currency,

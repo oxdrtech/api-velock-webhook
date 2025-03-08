@@ -21,6 +21,7 @@ export class PaydDepositService {
 
   async execute(data: PaydDepositEventDto): Promise<Deposit> {
     const { data: depositData } = data;
+
     const [playerExternalIdExisting, depositTransactionIdExisting] = await Promise.all([
       this.playersRepositories.findPlayerByExternalId(depositData.userId),
       this.depositsRepositories.findDepositByTransactionId(depositData.id),
@@ -29,14 +30,16 @@ export class PaydDepositService {
     if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
     if (!depositTransactionIdExisting) throw new NotFoundException('Depósito não existe');
 
+    const depositAmountInCents = Math.round(depositData.amount * 100);
+
     const updatedPlayerData: UpdatePlayerDto = {
-      balance: (playerExternalIdExisting.balance ?? 0) + (depositData.amount ?? 0),
+      balance: (playerExternalIdExisting.balance ?? 0) + depositAmountInCents,
       firstDepositDate: playerExternalIdExisting.firstDepositDate ?? new Date(),
-      firstDepositValue: playerExternalIdExisting.firstDepositValue ?? depositData.amount ?? 0,
+      firstDepositValue: playerExternalIdExisting.firstDepositValue ?? depositAmountInCents,
       lastDepositDate: new Date(),
-      lastDepositValue: depositData.amount ?? playerExternalIdExisting.lastDepositValue ?? 0,
+      lastDepositValue: depositAmountInCents ?? playerExternalIdExisting.lastDepositValue ?? 0,
       totalDepositCount: (playerExternalIdExisting.totalDepositCount ?? 0) + 1,
-      totalDepositValue: (playerExternalIdExisting.totalDepositValue ?? 0) + (depositData.amount ?? 0),
+      totalDepositValue: (playerExternalIdExisting.totalDepositValue ?? 0) + depositAmountInCents,
       playerStatus: PlayerStatus.ACTIVE,
     };
 
@@ -44,7 +47,7 @@ export class PaydDepositService {
 
     const updateDepositData: UpdateDepositDto = {
       transactionId: depositData.id,
-      amount: depositData.amount,
+      amount: depositAmountInCents,
       currency: depositData.currency ?? depositTransactionIdExisting.currency,
       date: depositData.date ?? depositTransactionIdExisting.date,
       depositStatus: "APPROVED",

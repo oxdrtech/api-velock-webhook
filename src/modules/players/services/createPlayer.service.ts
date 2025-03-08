@@ -33,7 +33,6 @@ export class CreatePlayerService {
       country: playerData.country,
       language: playerData.language,
       date: playerData.date,
-      phoneCountryCode: playerData.phoneCountryCode,
       phone: playerData.phone,
       balance: playerData.balance,
       birthDate: playerData.birthDate,

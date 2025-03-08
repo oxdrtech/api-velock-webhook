@@ -1,5 +1,5 @@
 import { Transform, Type } from "class-transformer";
-import { IsBoolean, IsDate, IsEmail, IsInt, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsDate, IsEmail, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 
 class DepositDataDto {
   @IsString()
@@ -20,7 +20,7 @@ class DepositDataDto {
   @IsEmail()
   email?: string | null;
 
-  @IsInt()
+  @IsNumber()
   amount: number;
 
   @IsOptional()

@@ -1,5 +1,5 @@
 import { Transform, Type } from "class-transformer";
-import { IsDate, IsEmail, IsInt, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsDate, IsEmail, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 
 class WithdrawDataDto {
   @IsString()
@@ -20,7 +20,7 @@ class WithdrawDataDto {
   @IsEmail()
   email?: string | null;
 
-  @IsInt()
+  @IsNumber()
   amount: number;
 
   @IsOptional()

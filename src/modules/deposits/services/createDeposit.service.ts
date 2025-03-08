@@ -29,9 +29,11 @@ export class CreateDepositService {
     if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
     if (depositTransactionIdExists) throw new BadRequestException('Já existe um deposito com esse ID de transação');
 
+    const depositAmountInCents = Math.round(depositData.amount * 100);
+
     const updateDepositData: CreateDepositDto = {
       transactionId: depositData.id,
-      amount: depositData.amount,
+      amount: depositAmountInCents,
       method: depositData.method,
       date: depositData.date,
       currency: depositData.currency,
@@ -39,8 +41,8 @@ export class CreateDepositService {
     };
 
     const createdDeposit = await this.depositsRepositories.createDeposit(updateDepositData);
-
     const updatedPlayer = await this.playersRepositories.findPlayerByExternalId(depositData.userId);
+
     this.depositsListener.emitDepositCreated(createdDeposit, updatedPlayer);
 
     return createdDeposit;

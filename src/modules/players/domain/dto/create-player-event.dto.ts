@@ -1,4 +1,4 @@
-import { IsString, IsEmail, ValidateNested, IsDate, IsOptional, IsInt } from 'class-validator';
+import { IsString, IsEmail, ValidateNested, IsDate, IsOptional, IsInt, IsNumber } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
 class PlayerDataDto {
@@ -42,7 +42,7 @@ class PlayerDataDto {
   phone?: string | null;
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   balance?: number;
 
   @IsOptional()
