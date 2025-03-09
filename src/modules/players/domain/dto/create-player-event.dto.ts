@@ -1,4 +1,4 @@
-import { IsString, IsEmail, ValidateNested, IsDate, IsOptional, IsInt, IsNumber } from 'class-validator';
+import { IsString, IsEmail, ValidateNested, IsDate, IsOptional, IsNumber } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
 class PlayerDataDto {

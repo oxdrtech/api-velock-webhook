@@ -21,7 +21,7 @@ export class PlayersRepository implements IPlayersRepositories {
   }
 
   findPlayerByExternalId(externalId: string): Promise<Player> {
-    return this.prisma.player.findUnique({ where: { externalId }, select: playersSelectedFields });
+    return this.prisma.player.findUnique({ where: { externalId } });
   }
 
   findPlayerByEmail(email: string): Promise<Player> {
