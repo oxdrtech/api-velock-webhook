@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { DEPOSITS_SERVICE_TOKEN } from '../utils/depositsServiceToken';
 import { IDepositsRepositories } from '../domain/repositories/IDeposits.repositories';
 import { CreateDepositDto } from '../domain/dto/create-deposit.dto';
@@ -26,8 +26,18 @@ export class CreateDepositService {
       this.depositsRepositories.findDepositByTransactionId(depositData.id),
     ]);
 
-    if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
     if (depositTransactionIdExists) throw new BadRequestException('Já existe um deposito com esse ID de transação');
+    
+    let player = playerExternalIdExisting;
+    if (!player) {
+      player = await this.playersRepositories.createPlayer({
+        externalId: depositData.userId,
+        tenantId: depositData.tenantId,
+        name: depositData.name,
+        email: depositData.email || "",
+        phone: depositData.phone,
+      })
+    }
 
     const depositAmountInCents = Math.round(depositData.amount * 100);
 
@@ -37,7 +47,7 @@ export class CreateDepositService {
       method: depositData.method,
       date: depositData.date,
       currency: depositData.currency,
-      playerId: playerExternalIdExisting.id,
+      playerId: player.id,
     };
 
     const createdDeposit = await this.depositsRepositories.createDeposit(updateDepositData);
