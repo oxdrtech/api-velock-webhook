@@ -8,7 +8,7 @@ export class AppController {
       project: 'api-velock-webhook',
       description: '',
       owner: 'Miguel Romaniw',
-      builder: 'https://github.com/DDR23',
+      builder: 'https://github.com/oxdrtech',
       statusCode: 200,
     };
   }
