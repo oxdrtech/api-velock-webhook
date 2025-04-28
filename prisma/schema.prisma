@@ -30,7 +30,8 @@ enum LogStatus {
 
 enum LogType {
   PLAYER
-  DEPOSIT
+  DEPOSIT_CREATED
+  DEPOSIT_PAID
   WITHDRAW
   LOGIN
   SYSTEM

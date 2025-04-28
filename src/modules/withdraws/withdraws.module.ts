@@ -12,12 +12,14 @@ import { FindWithdrawsByPlayerIdService } from './services/findWithdrawsByPlayer
 import { SocketModule } from '../socket/socket.module';
 import { WithdrawsListener } from '../socket/infra/listeners/withsraws.listener';
 import { PLAYERS_SERVICE_TOKEN } from '../players/utils/playersServiceToken';
+import { LogsModule } from '../logs/logs.module';
 
 @Module({
   imports: [
     PrismaModule,
     forwardRef(() => PlayersModule),
     SocketModule,
+    LogsModule,
   ],
   controllers: [
     WithdrawsController,

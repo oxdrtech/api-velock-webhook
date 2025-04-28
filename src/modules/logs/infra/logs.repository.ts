@@ -7,10 +7,10 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class LogsRepository implements ILogsRepositories {
   constructor(
-    private readonly prisma: PrismaService
+    private readonly prisma: PrismaService,
   ) { }
 
-  async createLog(data: CreateLogDto): Promise<Log> {
+  createLog(data: CreateLogDto): Promise<Log> {
     return this.prisma.log.create({ data });
   }
 }

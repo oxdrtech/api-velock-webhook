@@ -14,6 +14,7 @@ import { FindPlayerByIdService } from './services/findPlayerById.service';
 import { SocketModule } from '../socket/socket.module';
 import { PlayersListener } from '../socket/infra/listeners/players.listener';
 import { PLAYERS_SERVICE_TOKEN } from './utils/playersServiceToken';
+import { LogsModule } from '../logs/logs.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PLAYERS_SERVICE_TOKEN } from './utils/playersServiceToken';
     WithdrawsModule,
     LoginsModule,
     SocketModule,
+    LogsModule,
   ],
   controllers: [
     PlayersController,

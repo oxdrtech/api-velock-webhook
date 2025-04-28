@@ -11,12 +11,14 @@ import { SocketModule } from '../socket/socket.module';
 import { LoginsListener } from '../socket/infra/listeners/logins.listener';
 import { LOGINS_SERVICE_TOKEN } from './utils/loginsServiceToken';
 import { PLAYERS_SERVICE_TOKEN } from '../players/utils/playersServiceToken';
+import { LogsModule } from '../logs/logs.module';
 
 @Module({
   imports: [
     PrismaModule,
     forwardRef(() => PlayersModule),
     SocketModule,
+    LogsModule,
   ],
   controllers: [
     LoginsController,

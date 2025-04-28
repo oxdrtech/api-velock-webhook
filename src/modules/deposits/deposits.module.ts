@@ -13,12 +13,14 @@ import { FindDepositByTransactionIdService } from './services/findDepositByTrans
 import { SocketModule } from '../socket/socket.module';
 import { DepositsListener } from '../socket/infra/listeners/deposits.listener';
 import { PLAYERS_SERVICE_TOKEN } from '../players/utils/playersServiceToken';
+import { LogsModule } from '../logs/logs.module';
 
 @Module({
   imports: [
     PrismaModule,
     forwardRef(() => PlayersModule),
     SocketModule,
+    LogsModule,
   ],
   controllers: [
     DepositsController,
