@@ -24,18 +24,27 @@ export class CreateLoginService {
 
     const playerExternalIdExisting = await this.playersRepositories.findPlayerByExternalId(loginData.userId);
 
-    if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
-
-    const updatePlayerData: UpdatePlayerDto = {
-      lastLoginDate: new Date,
+    let player = playerExternalIdExisting;
+    if (!player) {
+      player = await this.playersRepositories.createPlayer({
+        externalId: loginData.userId,
+        tenantId: loginData.tenantId,
+        name: loginData.name,
+        email: loginData.email || "",
+        phone: loginData.phone,
+      })
     };
 
-    await this.playersRepositories.updatePlayer(playerExternalIdExisting.id, updatePlayerData);
+    const updatePlayerData: UpdatePlayerDto = {
+      lastLoginDate: new Date(),
+    };
+
+    await this.playersRepositories.updatePlayer(player.id, updatePlayerData);
 
     const updateLoginData: CreateLoginDto = {
       ipAddress: loginData.ipAddress,
       date: loginData.date,
-      playerId: playerExternalIdExisting.id,
+      playerId: player.id,
     };
 
     const createdLogin = await this.loginsRepositories.createLogin(updateLoginData);
