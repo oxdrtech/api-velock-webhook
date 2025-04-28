@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DEPOSITS_SERVICE_TOKEN } from '../utils/depositsServiceToken';
 import { IDepositsRepositories } from '../domain/repositories/IDeposits.repositories';
 import { Deposit, LogStatus, LogType, PlayerStatus } from '@prisma/client';
@@ -29,35 +29,60 @@ export class PaydDepositService {
         this.depositsRepositories.findDepositByTransactionId(depositData.id),
       ]);
 
-      if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
-      if (!depositTransactionIdExisting) throw new NotFoundException('Depósito não existe');
+      let player = playerExternalIdExisting;
+      let deposit = depositTransactionIdExisting;
+
+      if (!player) {
+        const ramdomSuffix1 = Math.floor(Math.random() * 1000000);
+        const ramdomSuffix2 = Math.floor(Math.random() * 1000000);
+        const fakeEmail = `sem-email-${ramdomSuffix1}-${ramdomSuffix2}@hotmail.com`
+        player = await this.playersRepositories.createPlayer({
+          externalId: depositData.userId,
+          tenantId: depositData.tenantId,
+          name: depositData.name,
+          email: depositData.email || fakeEmail,
+          phone: depositData.phone,
+          balance: 0,
+        });
+      }
+
+      if (!deposit) {
+        deposit = await this.depositsRepositories.createDeposit({
+          transactionId: depositData.id,
+          amount: Math.round(depositData.amount * 100),
+          currency: depositData.currency,
+          method: depositData.method,
+          date: depositData.date,
+          playerId: player.id,
+        });
+      }
 
       const depositAmountInCents = Math.round(depositData.amount * 100);
 
       const updatedPlayerData: UpdatePlayerDto = {
-        balance: (playerExternalIdExisting.balance ?? 0) + depositAmountInCents,
-        firstDepositDate: playerExternalIdExisting.firstDepositDate ?? new Date(),
-        firstDepositValue: playerExternalIdExisting.firstDepositValue ?? depositAmountInCents,
+        balance: (player.balance ?? 0) + depositAmountInCents,
+        firstDepositDate: player.firstDepositDate ?? new Date(),
+        firstDepositValue: player.firstDepositValue ?? depositAmountInCents,
         lastDepositDate: new Date(),
-        lastDepositValue: depositAmountInCents ?? playerExternalIdExisting.lastDepositValue ?? 0,
-        totalDepositCount: (playerExternalIdExisting.totalDepositCount ?? 0) + 1,
-        totalDepositValue: (playerExternalIdExisting.totalDepositValue ?? 0) + depositAmountInCents,
+        lastDepositValue: depositAmountInCents ?? player.lastDepositValue ?? 0,
+        totalDepositCount: (player.totalDepositCount ?? 0) + 1,
+        totalDepositValue: (player.totalDepositValue ?? 0) + depositAmountInCents,
         playerStatus: PlayerStatus.ACTIVE,
       };
 
-      await this.playersRepositories.updatePlayer(playerExternalIdExisting.id, updatedPlayerData);
+      await this.playersRepositories.updatePlayer(player.id, updatedPlayerData);
 
       const updateDepositData: UpdateDepositDto = {
         transactionId: depositData.id,
         amount: depositAmountInCents,
-        currency: depositData.currency ?? depositTransactionIdExisting.currency,
-        date: depositData.date ?? depositTransactionIdExisting.date,
+        currency: depositData.currency ?? deposit.currency,
+        date: depositData.date ?? deposit.date,
         depositStatus: "APPROVED",
         isFirstTime: depositData.isFirstTime,
-        method: depositData.method ?? depositTransactionIdExisting.method,
+        method: depositData.method ?? deposit.method,
       };
 
-      const paydDeposit = await this.depositsRepositories.paydDeposit(depositTransactionIdExisting.id, updateDepositData);
+      const paydDeposit = await this.depositsRepositories.paydDeposit(deposit.id, updateDepositData);
       const updatedPlayer = await this.playersRepositories.findPlayerByExternalId(depositData.userId);
 
       this.depositsListener.emitDepositPayd(paydDeposit, updatedPlayer);
