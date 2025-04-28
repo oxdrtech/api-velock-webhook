@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { ILoginsRepositories } from "../domain/repositories/ILogins.repositories";
 import { Login } from "@prisma/client";
 import { IPlayersRepositories } from "src/modules/players/domain/repositories/IPlayers.repositories";

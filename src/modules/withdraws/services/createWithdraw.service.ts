@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { WITHDRAW_SERVICE_TOKEN } from '../utils/withdrawsServiceToken';
 import { IWithdrawsRepositories } from '../domain/repositories/IWithdraw.repositories';
 import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IPlayers.repositories';
