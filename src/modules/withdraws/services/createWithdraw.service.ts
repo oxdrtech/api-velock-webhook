@@ -27,20 +27,30 @@ export class CreateWithdrawService {
       this.withdrawsRepositories.findWithdrawByTransactionId(withdrawData.id),
     ]);
 
-    if (!playerExternalIdExisting) throw new NotFoundException('Player não existe');
     if (withdrawIdExisting) throw new BadRequestException('Esse saque já foi registrado');
+
+    let player = playerExternalIdExisting;
+    if (!player) {
+      player = await this.playersRepositories.createPlayer({
+        externalId: withdrawData.userId,
+        tenantId: withdrawData.tenantId,
+        name: withdrawData.name,
+        email: withdrawData.email || "",
+        phone: withdrawData.phone,
+      })
+    };
 
     const withdrawAmountInCents = Math.round(withdrawData.amount * 100);
 
     const updatePlayerData: UpdatePlayerDto = {
-      balance: (playerExternalIdExisting.balance ?? 0) - withdrawAmountInCents,
+      balance: (player.balance ?? 0) - withdrawAmountInCents,
       lastWithdrawalDate: new Date(),
-      lastWithdrawalValue: withdrawAmountInCents ?? playerExternalIdExisting.lastWithdrawalValue ?? 0,
-      totalWithdrawalCount: (playerExternalIdExisting.totalWithdrawalCount ?? 0) + 1,
-      totalWithdrawalValue: (playerExternalIdExisting.totalWithdrawalValue ?? 0) + withdrawAmountInCents,
+      lastWithdrawalValue: withdrawAmountInCents ?? player.lastWithdrawalValue ?? 0,
+      totalWithdrawalCount: (player.totalWithdrawalCount ?? 0) + 1,
+      totalWithdrawalValue: (player.totalWithdrawalValue ?? 0) + withdrawAmountInCents,
     };
 
-    await this.playersRepositories.updatePlayer(playerExternalIdExisting.id, updatePlayerData);
+    await this.playersRepositories.updatePlayer(player.id, updatePlayerData);
 
     const updateWithdrawData: CreateWithdrawDto = {
       transactionId: withdrawData.id,
@@ -48,7 +58,7 @@ export class CreateWithdrawService {
       method: withdrawData.method,
       date: withdrawData.date,
       currency: withdrawData.currency,
-      playerId: playerExternalIdExisting.id,
+      playerId: player.id,
     };
 
     const createdWithdraw = await this.withdrawsRepositories.createWithdraw(updateWithdrawData);
