@@ -1,0 +1,1 @@
+export const LOG_SERVICE_TOKEN = 'LOG_SERVICE_TOKEN';

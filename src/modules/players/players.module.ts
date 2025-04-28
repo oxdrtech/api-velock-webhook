@@ -39,10 +39,5 @@ import { PLAYERS_SERVICE_TOKEN } from './utils/playersServiceToken';
       useClass: PlayersRepository,
     },
   ],
-  exports: [
-    FindPlayerByIdService,
-    FindPlayerByExternalIdService,
-    UpdatePlayerService,
-  ]
 })
 export class PlayersModule { }

@@ -6,6 +6,7 @@ import { DepositsModule } from './modules/deposits/deposits.module';
 import { WithdrawsModule } from './modules/withdraws/withdraws.module';
 import { LoginsModule } from './modules/logins/logins.module';
 import { SocketModule } from './modules/socket/socket.module';
+import { LogsModule } from './modules/logs/logs.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { SocketModule } from './modules/socket/socket.module';
     WithdrawsModule,
     LoginsModule,
     SocketModule,
+    LogsModule,
   ],
   controllers: [
     AppController,

@@ -17,10 +17,6 @@ import { LoginsListener } from './infra/listeners/logins.listener';
   ],
   exports: [
     SocketService,
-    PlayersListener,
-    DepositsListener,
-    WithdrawsListener,
-    LoginsListener,
   ],
 })
 export class SocketModule { }
