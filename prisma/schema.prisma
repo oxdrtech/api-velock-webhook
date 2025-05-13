@@ -34,6 +34,7 @@ enum LogType {
   DEPOSIT_PAID
   WITHDRAW
   LOGIN
+  ANALYTICS
   SYSTEM
 }
 

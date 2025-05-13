@@ -7,6 +7,7 @@ import { WithdrawsModule } from './modules/withdraws/withdraws.module';
 import { LoginsModule } from './modules/logins/logins.module';
 import { SocketModule } from './modules/socket/socket.module';
 import { LogsModule } from './modules/logs/logs.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { LogsModule } from './modules/logs/logs.module';
     LoginsModule,
     SocketModule,
     LogsModule,
+    AnalyticsModule,
   ],
   controllers: [
     AppController,
