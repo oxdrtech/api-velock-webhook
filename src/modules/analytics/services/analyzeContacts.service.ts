@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { Cron } from '@nestjs/schedule';
+import * as cron from 'node-cron';
 import { firstValueFrom } from 'rxjs';
 import { IAnalyticsRepositories } from '../domain/repositories/IAnalyticsRepositories';
 import { LogStatus, LogType } from '@prisma/client';
@@ -19,6 +19,20 @@ export class AnalyzeContactsService {
     private readonly createLogService: CreateLogService,
   ) { }
 
+  onModuleInit() {
+    // Executa todos os dias às 3h da manhã (0 3 * * *)
+    cron.schedule('0 3 * * *', () => {
+      this.logger.log('Iniciando análise diária de contacts (via node-cron)...');
+      this.runDailyAnalysis();
+    });
+
+    // Se quiser ativar um cron de teste (a cada minuto), descomente abaixo:
+    // cron.schedule('* * * * *', () => {
+    //   this.logger.log('Executando análise de teste de contacts...');
+    //   this.runDailyAnalysis();
+    // });
+  }
+
   private async fetchContacts(): Promise<ApiPlayerContactDto[]> {
     const url = 'https://option-api.asap.codes/intarget/players/contacts';
     const params = {
@@ -34,12 +48,6 @@ export class AnalyzeContactsService {
     return response.data;
   }
 
-  // @Cron('*/1 * * * *') // Roda a cada 1 minuto (para testes)
-  // async runTestAnalysis() {
-  //   await this.runDailyAnalysis();
-  // }
-
-  @Cron('0 3 * * *')
   async runDailyAnalysis() {
     try {
       const contacts = await this.fetchContacts();

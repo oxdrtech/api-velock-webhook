@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { Cron } from '@nestjs/schedule';
+import * as cron from 'node-cron';
 import { firstValueFrom } from 'rxjs';
 import { IAnalyticsRepositories } from '../domain/repositories/IAnalyticsRepositories';
 import { LogStatus, LogType } from '@prisma/client';
@@ -23,6 +23,20 @@ export class AnalyzeTransactionsService {
     private readonly createLogService: CreateLogService,
   ) { }
 
+  onModuleInit() {
+    // Executa todos os dias às 3h da manhã (0 3 * * *)
+    cron.schedule('0 4 * * *', () => {
+      this.logger.log('Iniciando análise diária de transactions (via node-cron)...');
+      this.runDailyAnalysis();
+    });
+
+    // Se quiser ativar um cron de teste (a cada minuto), descomente abaixo:
+    // cron.schedule('* * * * *', () => {
+    //   this.logger.log('Executando análise de teste de transactions...');
+    //   this.runDailyAnalysis();
+    // });
+  }
+
   private async fetchTransactions(): Promise<ApiDepositTransactionDto[]> {
     const url = 'https://option-api.asap.codes/intarget/players/transactions';
     const params = {
@@ -38,12 +52,6 @@ export class AnalyzeTransactionsService {
     return response.data;
   }
 
-  // @Cron('*/1 * * * *')
-  // async runTestAnalysis() {
-  //   await this.runDailyAnalysis();
-  // }
-
-  @Cron('0 4 * * *')
   async runDailyAnalysis() {
     try {
       const transactions = await this.fetchTransactions();

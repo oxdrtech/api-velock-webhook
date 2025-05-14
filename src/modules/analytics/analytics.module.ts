@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
 import { HttpModule } from '@nestjs/axios';
 import { ANALYTICS_SERVICE_TOKEN } from './utils/analyticsServiceToken';
 import { AnalyticsRepository } from './infra/analytics.repository';
@@ -17,7 +16,6 @@ import { AnalyzeTransactionsService } from './services/analyzeTransactions.servi
 @Module({
   imports: [
     PrismaModule,
-    ScheduleModule.forRoot(),
     HttpModule,
     PlayersModule,
     DepositsModule,
