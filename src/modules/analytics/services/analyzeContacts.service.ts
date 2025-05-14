@@ -39,7 +39,7 @@ export class AnalyzeContactsService {
   //   await this.runDailyAnalysis();
   // }
 
-  @Cron('59 22 * * *')
+  @Cron('0 3 * * *')
   async runDailyAnalysis() {
     try {
       const contacts = await this.fetchContacts();

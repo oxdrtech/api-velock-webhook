@@ -43,7 +43,7 @@ export class AnalyzeTransactionsService {
   //   await this.runDailyAnalysis();
   // }
 
-  @Cron('59 23 * * *')
+  @Cron('0 4 * * *')
   async runDailyAnalysis() {
     try {
       const transactions = await this.fetchTransactions();
