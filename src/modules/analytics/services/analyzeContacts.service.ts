@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { Cron } from '@nestjs/schedule';
 import { firstValueFrom } from 'rxjs';
 import { IAnalyticsRepositories } from '../domain/repositories/IAnalyticsRepositories';
-import { LogStatus, LogType, Player } from '@prisma/client';
+import { LogStatus, LogType } from '@prisma/client';
 import { CreateLogService } from 'src/modules/logs/services/createLog.service';
 import { ANALYTICS_SERVICE_TOKEN } from '../utils/analyticsServiceToken';
 import { ApiPlayerContactDto } from '../domain/dto/api-player-contact.dto copy';
@@ -34,39 +34,45 @@ export class AnalyzeContactsService {
     return response.data;
   }
 
-  private mapToPlayerDomain(apiPlayer: ApiPlayerContactDto): Player {
-    return {
-      externalId: apiPlayer.player_id,
-      tenantId: apiPlayer.tenantId,
-      email: apiPlayer.email,
-      phone: apiPlayer.phone,
-    } as Player;
-  }
+  // @Cron('*/1 * * * *') // Roda a cada 1 minuto (para testes)
+  // async runTestAnalysis() {
+  //   await this.runDailyAnalysis();
+  // }
 
-  @Cron('*/1 * * * *') // Roda a cada 1 minuto (para testes)
-  async runTestAnalysis() {
-    await this.runDailyAnalysis();
-  }
-
-  @Cron('59 23 * * *')
+  @Cron('59 22 * * *')
   async runDailyAnalysis() {
     try {
       const contacts = await this.fetchContacts();
+      let processedCount = 0;
+      let errorCount = 0;
 
-      await Promise.all(
-        contacts.map(async (contact) => {
-          const player = this.mapToPlayerDomain(contact);
-          await this.analyticsRepository.upsertPlayer(player);
-        })
-      );
+      for (const contact of contacts) {
+        try {
+          await this.analyticsRepository.upsertPlayer({
+            externalId: contact.player_id,
+            tenantId: contact.tenantId,
+            email: contact.email,
+            phone: contact.phone,
+          });
 
-      this.logger.log(`Successfully processed ${contacts.length} players`);
+          processedCount++;
+        } catch (contactsError) {
+          errorCount++;
+        }
+      }
+
+      this.logger.log(`Processamento de Contacts concluído. 
+      - Total: ${contacts.length} 
+      - Processadas com sucesso: ${processedCount}
+      - Falhas: ${errorCount}`);
+
     } catch (error) {
       this.logger.error('Failed to analyze contacts', error);
       await this.createLogService.execute({
         logStatus: LogStatus.FAILED,
         logType: LogType.ANALYTICS,
         message: error.message,
+        payload: { stack: error.stack },
       });
     }
   }

@@ -12,7 +12,7 @@ import { DEPOSITS_SERVICE_TOKEN } from '../deposits/utils/depositsServiceToken';
 import { DepositsRepository } from '../deposits/infra/deposits.repository';
 import { DepositsModule } from '../deposits/deposits.module';
 import { PrismaModule } from '../prisma/prisma.module';
-// import { AnalyzeTransactionsService } from './services/analyzeTransactions.service';
+import { AnalyzeTransactionsService } from './services/analyzeTransactions.service';
 
 @Module({
   imports: [
@@ -25,7 +25,7 @@ import { PrismaModule } from '../prisma/prisma.module';
   ],
   providers: [
     AnalyzeContactsService,
-    // AnalyzeTransactionsService,
+    AnalyzeTransactionsService,
     {
       provide: ANALYTICS_SERVICE_TOKEN,
       useClass: AnalyticsRepository,

@@ -1,6 +1,7 @@
-import { Deposit, Player } from "@prisma/client";
+import { CreateDepositDto } from "src/modules/deposits/domain/dto/create-deposit.dto";
+import { CreatePlayerDto } from "src/modules/players/domain/dto/create-player.dto";
 
 export interface IAnalyticsRepositories {
-  upsertPlayer(Player: Player): Promise<void>;
-  upsertDeposit(deposit: Deposit): Promise<void>;
+  upsertPlayer(Player: CreatePlayerDto): Promise<void>;
+  upsertDeposit(deposit: CreateDepositDto): Promise<void>;
 }
