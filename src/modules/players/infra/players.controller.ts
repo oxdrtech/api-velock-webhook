@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Query } from '@nestjs/common';
 import { CreatePlayerService } from '../services/createPlayer.service';
 import { FindPlayerByEmailService } from '../services/findPlayerByEmail.service';
 import { UpdatePlayerDto } from '../domain/dto/update-player.dto';
@@ -7,6 +7,8 @@ import { FindPlayersService } from '../services/findPlayers.service';
 import { FindPlayerByExternalIdService } from '../services/findPlayerByExternalId.service';
 import { CreatePlayerEventDto } from '../domain/dto/create-player-event.dto';
 import { FindPlayerByIdService } from '../services/findPlayerById.service';
+import { FindPlayerAffiliateIdsService } from '../services/findPlayersAffiliateIds.service';
+import { FilterParams } from 'src/shared/types/filterParams';
 
 @Controller('players')
 export class PlayersController {
@@ -16,6 +18,7 @@ export class PlayersController {
     private readonly findPlayerByExternalIdService: FindPlayerByExternalIdService,
     private readonly findPlayerByEmailService: FindPlayerByEmailService,
     private readonly findPlayersService: FindPlayersService,
+    private readonly findPlayerAffiliateIdsService: FindPlayerAffiliateIdsService,
     private readonly updatePlayerService: UpdatePlayerService,
   ) { }
 
@@ -48,8 +51,21 @@ export class PlayersController {
   }
 
   @Get()
-  findPlayers() {
-    return this.findPlayersService.execute();
+  findPlayers(
+    @Query('affiliates') affiliates?: string,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('onlyAffiliateIds') onlyAffiliateIds?: boolean,
+  ) {
+    if (onlyAffiliateIds) {
+      return this.findPlayerAffiliateIdsService.execute();
+    }
+    const filters: FilterParams = {
+      affiliateIds: affiliates?.split(','),
+      startDate: startDate ? new Date(startDate + 'T00:00:00.000Z') : undefined,
+      endDate: endDate ? new Date(endDate + 'T23:59:59.999Z') : undefined
+    }
+    return this.findPlayersService.execute(filters);
   }
 
   @Patch('update/:id')

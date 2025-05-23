@@ -5,6 +5,7 @@ import { CreatePlayerDto } from '../domain/dto/create-player.dto';
 import { IPlayersRepositories } from '../domain/repositories/IPlayers.repositories';
 import { UpdatePlayerDto } from '../domain/dto/update-player.dto';
 import { playersSelectedFields } from 'src/modules/prisma/utils/playersSelectedFields';
+import { FilterParams } from 'src/shared/types/filterParams';
 
 @Injectable()
 export class PlayersRepository implements IPlayersRepositories {
@@ -28,8 +29,33 @@ export class PlayersRepository implements IPlayersRepositories {
     return this.prisma.player.findUnique({ where: { email }, select: playersSelectedFields });
   }
 
-  findPlayers(): Promise<Player[]> {
-    return this.prisma.player.findMany();
+  findPlayers(filters?: FilterParams): Promise<Player[]> {
+    return this.prisma.player.findMany({
+      where: {
+        AND: [
+          filters?.affiliateIds ? {
+            affiliateId: {
+              in: filters.affiliateIds
+            }
+          } : {},
+          filters?.startDate && filters?.endDate ? {
+            createdAt: {
+              gte: filters.startDate,
+              lte: filters.endDate
+            }
+          } : {},
+        ]
+      },
+    });
+  }
+
+  async findPlayerAffiliateIds(): Promise<string[]> {
+    const result = await this.prisma.player.groupBy({
+      by: ['affiliateId'],
+      where: { affiliateId: { not: null } },
+      orderBy: { affiliateId: 'asc' }
+    });
+    return result.map(r => r.affiliateId!).filter(Boolean);
   }
 
   updatePlayer(id: string, data: UpdatePlayerDto): Promise<Player> {

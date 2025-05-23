@@ -14,6 +14,7 @@ import { SocketModule } from '../socket/socket.module';
 import { DepositsListener } from '../socket/infra/listeners/deposits.listener';
 import { PLAYERS_SERVICE_TOKEN } from '../players/utils/playersServiceToken';
 import { LogsModule } from '../logs/logs.module';
+import { FindDepositsService } from './services/findDeposits.service';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { LogsModule } from '../logs/logs.module';
     FindDepositByIdService,
     FindDepositByTransactionIdService,
     FindDepositsByPlayerIdService,
+    FindDepositsService,
     PaydDepositService,
     DepositsListener,
     {

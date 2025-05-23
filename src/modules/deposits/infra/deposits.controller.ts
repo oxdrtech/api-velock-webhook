@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateDepositService } from '../services/createDeposit.service';
 import { FindDepositByIdService } from '../services/findDepositById.service';
 import { CreateDepositEventDto } from '../domain/dto/create-deposit-event.dto';
@@ -6,6 +6,8 @@ import { FindDepositsByPlayerIdService } from '../services/findDepositsByPlayerI
 import { PaydDepositEventDto } from '../domain/dto/payd-deposit-event.dto';
 import { PaydDepositService } from '../services/paydDeposit.service';
 import { FindDepositByTransactionIdService } from '../services/findDepositByTransactionId.service';
+import { FindDepositsService } from '../services/findDeposits.service';
+import { FilterParams } from 'src/shared/types/filterParams';
 
 @Controller('deposits')
 export class DepositsController {
@@ -14,6 +16,7 @@ export class DepositsController {
     private readonly findDepositByIdService: FindDepositByIdService,
     private readonly findDepositByTransactionIdService: FindDepositByTransactionIdService,
     private readonly findDepositsByPlayerIdService: FindDepositsByPlayerIdService,
+    private readonly findDepositsService: FindDepositsService,
     private readonly paydDepositService: PaydDepositService,
   ) { }
 
@@ -43,6 +46,20 @@ export class DepositsController {
     @Param('playerId') playerId: string,
   ) {
     return this.findDepositsByPlayerIdService.execute(playerId);
+  }
+
+  @Get()
+  findDeposits(
+    @Query('affiliates') affiliates?: string,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+  ) {
+    const filters: FilterParams = {
+      affiliateIds: affiliates?.split(','),
+      startDate: startDate ? new Date(startDate + 'T00:00:00.000Z') : undefined,
+      endDate: endDate ? new Date(endDate + 'T23:59:59.999Z') : undefined
+    }
+    return this.findDepositsService.execute(filters);
   }
 
   @Post('payd')

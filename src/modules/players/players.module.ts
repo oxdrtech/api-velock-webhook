@@ -15,6 +15,7 @@ import { SocketModule } from '../socket/socket.module';
 import { PlayersListener } from '../socket/infra/listeners/players.listener';
 import { PLAYERS_SERVICE_TOKEN } from './utils/playersServiceToken';
 import { LogsModule } from '../logs/logs.module';
+import { FindPlayerAffiliateIdsService } from './services/findPlayersAffiliateIds.service';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { LogsModule } from '../logs/logs.module';
     FindPlayerByExternalIdService,
     FindPlayerByEmailService,
     FindPlayersService,
+    FindPlayerAffiliateIdsService,
     UpdatePlayerService,
     PlayersListener,
     {
