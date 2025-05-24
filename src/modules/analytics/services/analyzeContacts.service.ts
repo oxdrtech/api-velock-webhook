@@ -40,7 +40,7 @@ export class AnalyzeContactsService {
   private async fetchContacts(): Promise<ApiPlayerContactDto[]> {
     const url = 'https://option-api.asap.codes/intarget/players';
     const params = {
-      from: new Date(new Date().setDate(new Date().getDate() - 30)),
+      from: new Date(new Date().setDate(new Date().getDate() - 1)),
       to: new Date(),
       tenantId: '01JBWST3JJ2V79X9C9AR899DQ1',
     };
