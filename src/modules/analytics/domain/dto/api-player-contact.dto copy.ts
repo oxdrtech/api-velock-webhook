@@ -1,13 +1,22 @@
 export class ApiPlayerContactDto {
-  player_id: string;
+  id: string;
   tenantId: string;
-  email: string;
-  email_confirmed_at?: Date | null;
+  country: string;
+  first_name: string;
+  last_name: string;
+  is_active: boolean;
+  is_blocked: boolean;
+  registered_at: Date;
   modified_at: Date;
-  created_at: Date;
-  email_subscribe: boolean;
-  phone?: string | null;
-  phone_confirmed_at?: Date | null;
-  phone_subscribe: boolean;
-  push_token?: string | null;
+  self_excluded: boolean;
+  status: string;
+  ref_code: string;
+  timezone: string | null;
+  traffic_source: string | null;
+  user_agent: string | null;
+  birthday: string | null;
+  city: string | null;
+  gender: string | null;
+  ip: string | null;
+  locale: string | null;
 }

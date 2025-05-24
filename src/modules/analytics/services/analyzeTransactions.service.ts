@@ -40,7 +40,7 @@ export class AnalyzeTransactionsService {
   private async fetchTransactions(): Promise<ApiDepositTransactionDto[]> {
     const url = 'https://option-api.asap.codes/intarget/players/transactions';
     const params = {
-      from: new Date(new Date().setDate(new Date().getDate() - 1)),
+      from: new Date(new Date().setDate(new Date().getDate() - 30)),
       to: new Date(),
       tenantId: '01JBWST3JJ2V79X9C9AR899DQ1',
     };
@@ -77,6 +77,7 @@ export class AnalyzeTransactionsService {
             date: transaction.created_at,
             currency: transaction.currency,
             playerId: player.id,
+            depositStatus: transaction.comment.includes("approved") ? "APPROVED" : "PENDING"
           });
 
           processedCount++;
@@ -88,7 +89,7 @@ export class AnalyzeTransactionsService {
       this.logger.log(`Processamento de Transactions concluído. 
       - Total: ${transactions.length} 
       - Processadas com sucesso: ${processedCount} 
-      - Ignoradas: ${skippedCount}
+      - Transações com player nao existente: ${skippedCount}
       - Falhas: ${errorCount}`);
 
     } catch (error) {

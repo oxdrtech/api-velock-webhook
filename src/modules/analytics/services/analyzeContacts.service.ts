@@ -7,6 +7,8 @@ import { LogStatus, LogType } from '@prisma/client';
 import { CreateLogService } from 'src/modules/logs/services/createLog.service';
 import { ANALYTICS_SERVICE_TOKEN } from '../utils/analyticsServiceToken';
 import { ApiPlayerContactDto } from '../domain/dto/api-player-contact.dto copy';
+import { IPlayersRepositories } from 'src/modules/players/domain/repositories/IPlayers.repositories';
+import { PLAYERS_SERVICE_TOKEN } from 'src/modules/players/utils/playersServiceToken';
 
 @Injectable()
 export class AnalyzeContactsService {
@@ -15,6 +17,8 @@ export class AnalyzeContactsService {
   constructor(
     @Inject(ANALYTICS_SERVICE_TOKEN)
     private readonly analyticsRepository: IAnalyticsRepositories,
+    @Inject(PLAYERS_SERVICE_TOKEN)
+    private readonly playersRepository: IPlayersRepositories,
     private readonly httpService: HttpService,
     private readonly createLogService: CreateLogService,
   ) { }
@@ -34,9 +38,9 @@ export class AnalyzeContactsService {
   }
 
   private async fetchContacts(): Promise<ApiPlayerContactDto[]> {
-    const url = 'https://option-api.asap.codes/intarget/players/contacts';
+    const url = 'https://option-api.asap.codes/intarget/players';
     const params = {
-      from: new Date(new Date().setDate(new Date().getDate() - 1)),
+      from: new Date(new Date().setDate(new Date().getDate() - 30)),
       to: new Date(),
       tenantId: '01JBWST3JJ2V79X9C9AR899DQ1',
     };
@@ -51,28 +55,32 @@ export class AnalyzeContactsService {
   async runDailyAnalysis() {
     try {
       const contacts = await this.fetchContacts();
-      let processedCount = 0;
+      let createdCount = 0;
+      let updatedCount = 0;
       let errorCount = 0;
 
       for (const contact of contacts) {
         try {
+          const player = await this.playersRepository.findPlayerByExternalId(contact.id);
           await this.analyticsRepository.upsertPlayer({
-            externalId: contact.player_id,
+            externalId: contact.id,
+            affiliateId: contact.ref_code,
             tenantId: contact.tenantId,
-            email: contact.email,
-            phone: contact.phone,
+            email: player?.email || `${contact.id}-${contact.first_name}@$temp.com`,
+            date: contact.registered_at,
           });
 
-          processedCount++;
+          player ? updatedCount++ : createdCount++;
         } catch (contactsError) {
           errorCount++;
         }
       }
 
       this.logger.log(`Processamento de Contacts concluído. 
-      - Total: ${contacts.length} 
-      - Processadas com sucesso: ${processedCount}
-      - Falhas: ${errorCount}`);
+      - Total: ${contacts.length}
+      - Criados: ${createdCount}
+      - Atualizados: ${updatedCount}
+      - Erros: ${errorCount}`);
 
     } catch (error) {
       this.logger.error('Failed to analyze contacts', error);

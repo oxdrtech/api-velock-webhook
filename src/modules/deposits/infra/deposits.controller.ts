@@ -56,8 +56,8 @@ export class DepositsController {
   ) {
     const filters: FilterParams = {
       affiliateIds: affiliates?.split(','),
-      startDate: startDate ? new Date(startDate + 'T00:00:00.000Z') : undefined,
-      endDate: endDate ? new Date(endDate + 'T23:59:59.999Z') : undefined
+      startDate: startDate ? new Date(`${startDate}T00:00:00-03:00`) : undefined,
+      endDate: endDate ? new Date(`${endDate}T23:59:59-03:00`) : undefined
     }
     return this.findDepositsService.execute(filters);
   }

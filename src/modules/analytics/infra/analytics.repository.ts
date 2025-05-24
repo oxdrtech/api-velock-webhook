@@ -17,28 +17,19 @@ export class AnalyticsRepository implements IAnalyticsRepositories {
   ) { }
 
   async upsertPlayer(player: CreatePlayerDto): Promise<void> {
-    try {
-      const existingPlayer = await this.playersRepository.findPlayerByExternalId(player.externalId);
-      existingPlayer
-        ? await this.playersRepository.updatePlayer(existingPlayer.id, player)
-        : await this.playersRepository.createPlayer(player);
-    } catch (error) {
-      throw new Error(`Failed to upsert player ${player.externalId}: ${error.message}`);
-    }
+    const existingPlayer = await this.playersRepository.findPlayerByExternalId(player.externalId);
+    existingPlayer
+      ? await this.playersRepository.updatePlayer(existingPlayer.id, player)
+      : await this.playersRepository.createPlayer(player);
   }
 
   async upsertDeposit(deposit: CreateDepositDto): Promise<void> {
-    try {
-      const player = await this.playersRepository.findPlayerById(deposit.playerId);
-      if (!player) {
-        throw new Error(`Jogador com ID ${deposit.playerId} não encontrado`);
-      }
-      const existingDeposit = await this.depositsRepository.findDepositByTransactionId(deposit.transactionId);
-      existingDeposit
-        ? await this.depositsRepository.paydDeposit(existingDeposit.id, deposit).catch((err) => console.log("err paydDeposit", err))
-        : await this.depositsRepository.createDeposit(deposit).catch((err) => console.log("err createDeposit", err));
-    } catch (error) {
-      throw new Error(`Failed to upsert deposit ${deposit.transactionId}: ${error.message}`);
-    }
+    const existingDeposit = await this.depositsRepository.findDepositByTransactionId(deposit.transactionId);
+    existingDeposit
+      ? await this.depositsRepository.paydDeposit(existingDeposit.id, deposit).catch((err) => console.log("err paydDeposit", err))
+      : await this.depositsRepository.createDeposit({
+        ...deposit,
+        isFirstTime: true,
+      });
   }
 }
